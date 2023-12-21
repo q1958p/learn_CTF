@@ -69,7 +69,7 @@ base64デコードしてFlagゲット。
 -------
 ## ジャンル：Reverse Engineering
 ### Transformation
-* WriteUPを見たため再挑戦
+* WriteUPを見たため再挑戦  
 encの中身を文字列にして、問題文のpythonコードを実行したがエラーとなった。
 
 1文字目の"灩"をバイナリで見ると、"0b0b111000001101001"。
