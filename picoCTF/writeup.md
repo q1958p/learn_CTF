@@ -26,6 +26,15 @@ Can you invoke help flags for a tool or binary? This program has extraordinarily
 Linux実行ファイルへのリンクがある。  
 -hでヘルプを表示するだけ。  
 
+### Nice netcat...
+```
+There is a nice program that you can talk to by using this command in a shell: $ nc mercury.picoctf.net 49039, but it doesn't speak English...
+```
+指示通りアクセスする。  
+数字が表示されるので、ASCIIコード変換しFlagゲット。
+
+-----
+
 ## ジャンル：Cryptography
 ### Mod 26
 ```
@@ -35,6 +44,9 @@ cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_uJdSftmh}
 
 ROT13による暗号化。  
 RTO13で検索すればオンラインデコーダがある。
+
+
+------
 
 ## ジャンル：Forensics
 ### Information
