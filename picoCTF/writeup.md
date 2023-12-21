@@ -36,3 +36,20 @@ cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_uJdSftmh}
 ROT13による暗号化。  
 RTO13で検索すればオンラインデコーダがある。
 
+## ジャンル：Forensics
+### Information
+```
+Files can always be changed in a secret way. Can you find the flag? cat.jpg
+```
+
+ぬこの画像。
+背景のディスプレイ、Exif情報、バイナリから"FLAG","flag","pico","ctf"等検索、stringsコマンドで文字列を列挙、binwalkで内部にファイルが無いか確認。
+が、めぼしい情報なし。  
+
+exiftoolで詳細を確認。  
+Licenseにランダム文字列はおかしくない？  
+Licenseにある文字列が不自然なことに気付けるかどうか。  
+base64デコードしてFlagゲット。
+
+画像右上の"MDY02 EPI 6037"はLINEcameraのフレームらしい。
+
