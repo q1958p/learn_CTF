@@ -69,7 +69,9 @@ base64デコードしてFlagゲット。
 -------
 ## ジャンル：Reverse Engineering
 ### Transformation
-* WriteUPを見たため再挑戦
+:::note warn
+再挑戦
+:::
 
 
 encの中身を文字列にして、問題文のpythonコードを実行したがエラーとなった。
