@@ -18,6 +18,14 @@ Can you run this Python script using this password to get the flag?
 Pythonスクリプト、パスワードファイル、暗号化されたフラグファイルの3つがリンクされている。  
 PythonスクリプトのUsageや-hで実行方法を見て、フラグファイルを復号する。  
 
+### Wave a flag
+```
+Can you invoke help flags for a tool or binary? This program has extraordinarily helpful information...
+```
+
+Linux実行ファイルへのリンクがある。  
+-hでヘルプを表示するだけ。  
+
 ## ジャンル：Cryptography
 ### Mod 26
 ```
