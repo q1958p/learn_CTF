@@ -79,3 +79,50 @@ encの中身を文字列にして、問題文のpythonコードを実行した�
 となりフラグが1文字に内包されていることがわかる。
 
 上位と下位をmaskしてprintしflagゲット。
+
+-------
+## ジャンル：Binary Exploitation
+### Stonks
+```
+I decided to try something noone else has before. I made a bot to automatically trade stonks for me using AI and machine learning.
+I wouldn't believe you if you told me it's unsecure! vuln.c nc mercury.picoctf.net 20195
+```
+
+**! 要再挑戦**  
+
+Format String Attackとはprintf(), syslog(), err()など、書式を用いた関数に関する脆弱性。  
+printf(str)のように、書式を使用しないと、printf()の出力内容をコントロールされる。  
+%xや%pによりメモリを表示できたりする。
+  
+vuln.cにはprintf(user_buf);のようにFormat String脆弱性がある。  
+user_bufに%pを複数渡すことでスタックが見れる。  
+```c:vuln.c
+	printf("What is your API token?\n");
+	scanf("%300s", user_buf);
+	printf("Buying stonks with token:\n");
+	printf(user_buf);
+```
+
+スタックの中に以下の部分がある。  
+```
+0x6f636970
+0x7b465443
+0x306c5f49
+0x345f7435
+0x6d5f6c6c
+0x306d5f79
+0x5f79336e
+0x35343036
+0x64303664
+0xffa7007d
+```
+これを1バイトずつ文字に直すと、
+```
+ocip{FTC0l_I4_t5m_ll0m_y_y3n5406d06d}
+```
+
+[CyberChef](https://gchq.github.io/CyberChef/ "CyberChef")  
+で"To hex"->"Swap endianness"->"From Hex"で変換し、  
+```
+picoCTF{I_l05t_4ll_my_m0n3y_6045d60d}
+```
