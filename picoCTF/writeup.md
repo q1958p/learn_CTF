@@ -126,3 +126,16 @@ ocip{FTC0l_I4_t5m_ll0m_y_y3n5406d06d}
 ```
 picoCTF{I_l05t_4ll_my_m0n3y_6045d60d}
 ```
+
+----------
+## ジャンル：Web Exploitation
+### GET aHEAD  
+```
+Find the flag being held on this server to get ahead of the competition http://mercury.picoctf.net:28916/
+```
+
+Hinsを見ると"リクエストを変更しレスポンスを見たら？"とある。  
+タイトルからHEADリクエストっぽいので、curlでHEADリクエストを送信し、フラグゲット。  
+```
+curl -I http://...
+```
