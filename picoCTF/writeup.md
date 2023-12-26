@@ -33,7 +33,19 @@ There is a nice program that you can talk to by using this command in a shell: $
 指示通りアクセスする。  
 数字が表示されるので、ASCIIコード変換しFlagゲット。
 
------
+### Static ain't always noise  
+
+バイナリーファイルとbashスクリプトが与えられる。  
+bash実行環境でスクリプトを実行すると、引数にファイルが必要なエラーが表示される。  
+バイナリーファイルを引数で与えるとテキストファイルが作成され、中にフラグが書いてある。  
+
+### Tab, Tab, Attack  
+
+zipが与えられる。  
+zipには長い名前のディレクトリ階層構造になっている。
+TAB補完でディレクトリに潜って行き、最後の実行ファイルに実行権限を与えて実行するとフラグゲット。  
+
+------------------
 
 ## ジャンル：Cryptography
 ### Mod 26
@@ -45,6 +57,15 @@ cvpbPGS{arkg_gvzr_V'yy_gel_2_ebhaqf_bs_ebg13_uJdSftmh}
 ROT13による暗号化。  
 RTO13で検索すればオンラインデコーダがある。
 
+### Mind you Ps and Qs  
+
+RSA暗号を解く問題。  
+暗号文c, 公開鍵Nとeが与えられる。
+
+[RSA Decoder](https://www.dcode.fr/rsa-cipher)
+を利用してフラグゲット。  
+
+RSAの仕組みについて復習が必要。  
 
 ------
 
@@ -65,6 +86,36 @@ base64デコードしてFlagゲット。
 
 画像右上の"MDY02 EPI 6037"はLINEcameraのフレームらしい。
 
+### Matryoshka doll
+マトリョーシカのpng画像が与えられる。  
+タイトルや説明文の通り、png画像に別のファイルが埋め込まれているのだろう。  
+
+Stirlingでバイナリを見てみる。  
+PNGのファイルフォーマット先頭は、  
+```
+89 50 4E 47
+.  P  N  G
+```
+末尾はIENDである。  
+
+IENDを検索するとまだデータが続いている。
+PKほにゃららとある。  
+PKほにゃららはZIPのファイルフォーマット。
+```
+[先頭]
+0x  50 4B 03 04
+    P  K  03 04
+
+[末尾]
+0x  50 4B 05 06
+    P  K  05 06
+まだ数バイト続くが、一応終端。
+```
+
+PNG~IENDを削除し、適当な名前.zipで保存する。　
+
+ZIPを開くとさらに画像があり、同じことを繰り返していくと、最終的にテキストが入ったZIPとなり、フラグゲット。  
+
 
 -------
 ## ジャンル：Reverse Engineering
@@ -79,6 +130,90 @@ encの中身を文字列にして、問題文のpythonコードを実行した�
 となりフラグが1文字に内包されていることがわかる。
 
 上位と下位をmaskしてprintしflagゲット。
+
+### keygenme-py
+
+Pythonスクリプトが与えられる。  
+実行すると、入力値によって動作が変化するようだ。  
+その中にLicense認証のような箇所がある。  
+
+```
+username_trial = "ANDERSON"
+bUsername_trial = b"ANDERSON"
+
+key_part_static1_trial = "picoCTF{1n_7h3_|<3y_of_"
+key_part_dynamic1_trial = "xxxxxxxx"
+key_part_static2_trial = "}"
+key_full_template_trial = key_part_static1_trial + key_part_dynamic1_trial + key_part_static2_trial
+```
+
+```
+def check_key(key, username_trial):
+
+    global key_full_template_trial
+
+    if len(key) != len(key_full_template_trial):
+        return False
+    else:
+        # Check static base key part --v
+        i = 0
+        for c in key_part_static1_trial:
+            if key[i] != c:
+                return False
+
+            i += 1
+
+        # TODO : test performance on toolbox container
+        # Check dynamic part --v
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[4]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[5]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[3]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[6]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[2]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[7]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[1]:
+            return False
+        else:
+            i += 1
+
+        if key[i] != hashlib.sha256(username_trial).hexdigest()[8]:
+            return False
+
+
+
+        return True
+```
+
+License認証処理は、前半の
+```
+key_part_static1_trial = "picoCTF{1n_7h3_|<3y_of_"
+```
+の一致確認と、後半の8バイトをsha256で変換した16進数を1バイトずつ4->5->3->6->2->7->1->8バイト目が一致しているか確認している。  
+sha256でハッシュかするのはユーザー名の"ANDERSON"なので、同じように1バイトずつ表示し、前半と結合してフラグゲット。  
 
 -------
 ## ジャンル：Binary Exploitation
